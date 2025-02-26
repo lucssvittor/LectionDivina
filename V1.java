@@ -1,12 +1,12 @@
 import java.util.*;
 
-class user {
+class User {
     String name;
     String email;
     String password;
-    List<Reflexao> historico = new ArrayList<>();
+    List<Reflexao> history = new ArrayList<>();
 
-    public user(String name, String email, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -14,34 +14,34 @@ class user {
 }
 
 class Reflexao {
-    String leitura;
-    String meditacao;
-    String oracao;
-    String contemplacao;
-    String data;
+    String reading;
+    String meditation;
+    String prayer;
+    String contemplation;
+    String date;
 
-    public Reflexao(String leitura, String meditacao, String oracao, String contemplacao, String data) {
-        this.leitura = leitura;
-        this.meditacao = meditacao;
-        this.oracao = oracao;
-        this.contemplacao = contemplacao;
-        this.data = data;
+    public Reflexao(String reading, String meditation, String prayer, String contemplation, String date) {
+        this.reading = reading;
+        this.meditation = meditation;
+        this.prayer = prayer;
+        this.contemplation = contemplation;
+        this.date = date;
     }
 }
 
 public class V1 {
-    static List<user> users = new ArrayList<>();
-    static user userAtual = null;
+    static List<User> users = new ArrayList<>();
+    static User currentUser = null;
     static Scanner scanner = new Scanner(System.in);
     
     public static void main(String[] args) {
         while (true) {
             System.out.println("\n1. Cadastrar\n2. Login\n3. Sair");
-            int escolha = scanner.nextInt();
+            int choice = scanner.nextInt();
             scanner.nextLine();
             
-            switch (escolha) {
-                case 1: cadastrar(); break;
+            switch (choice) {
+                case 1: register(); break;
                 case 2: login(); break;
                 case 3: System.exit(0);
                 default: System.out.println("Opção inválida.");
@@ -49,86 +49,86 @@ public class V1 {
         }
     }
 
-    static void cadastrar() {
-        System.out.print("name: ");
+    static void register() {
+        System.out.print("Nome: ");
         String name = scanner.nextLine();
         System.out.print("Email: ");
         String email = scanner.nextLine();
-        System.out.print("password: ");
+        System.out.print("Senha: ");
         String password = scanner.nextLine();
         
-        users.add(new user(name, email, password));
+        users.add(new User(name, email, password));
         System.out.println("Cadastro realizado com sucesso!");
     }
 
     static void login() {
         System.out.print("Email: ");
         String email = scanner.nextLine();
-        System.out.print("password: ");
+        System.out.print("Senha: ");
         String password = scanner.nextLine();
         
-        for (user u : users) {
+        for (User u : users) {
             if (u.email.equals(email) && u.password.equals(password)) {
-                userAtual = u;
-                System.err.println("Olá, " + userAtual.name + " Bem Vindo!");
-                MenuUser();
+                currentUser = u;
+                System.err.println("Olá, " + currentUser.name + " Bem Vindo!");
+                userMenu();
                 return;
             }
         }
-        System.out.println("Email ou password incorretos.");
+        System.out.println("Email ou senha incorretos.");
     }
 
-    static void MenuUser() {
+    static void userMenu() {
         while (true) {
             System.out.println("\n1. Ver passagem do dia\n2. Registrar Lectio Divina\n3. Ver histórico\n4. Sair");
-            int opcao = scanner.nextInt();
+            int option = scanner.nextInt();
             scanner.nextLine();
 
-            switch (opcao) {
-                case 1: exibirPassagem(); break;
-                case 2: registrarLectio(); break;
-                case 3: verHistorico(); break;
+            switch (option) {
+                case 1: displayPassage(); break;
+                case 2: registerLectio(); break;
+                case 3: viewHistory(); break;
                 case 4: return;
                 default: System.out.println("Opção inválida.");
             }
         }
     }
 
-    static void exibirPassagem() {
-        String passagem = "Mateus 6:33 - Buscai primeiro o Reino de Deus e a sua justiça.";
-        System.out.println("Passagem do dia: " + passagem);
+    static void displayPassage() {
+        String passage = "Mateus 6:33 - Buscai primeiro o Reino de Deus e a sua justiça.";
+        System.out.println("Passagem do dia: " + passage);
     }
 
-    static void registrarLectio() {
+    static void registerLectio() {
         System.out.print("Leitura: ");
-        String leitura = scanner.nextLine();
+        String reading = scanner.nextLine();
         System.out.print("Meditação: ");
-        String meditacao = scanner.nextLine();
+        String meditation = scanner.nextLine();
         System.out.print("Oração: ");
-        String oracao = scanner.nextLine();
+        String prayer = scanner.nextLine();
         System.out.print("Contemplação: ");
-        String contemplacao = scanner.nextLine();
-        String data = new Date().toString();
+        String contemplation = scanner.nextLine();
+        String date = new Date().toString();
 
-        Reflexao reflexao = new Reflexao(leitura, meditacao, oracao, contemplacao, data);
-        userAtual.historico.add(reflexao);
+        Reflexao reflexao = new Reflexao(reading, meditation, prayer, contemplation, date);
+        currentUser.history.add(reflexao);
         
         System.out.println("Reflexão salva com sucesso!");
-        System.out.println("Link para compartilhamento: https://lectio.app/share?data=" + data.replace(" ", "_"));
+        System.out.println("Link para compartilhamento: https://lectio.app/share?data=" + date.replace(" ", "_"));
     }
 
-    static void verHistorico() {
-        if (userAtual.historico.isEmpty()) {
+    static void viewHistory() {
+        if (currentUser.history.isEmpty()) {
             System.out.println("Nenhuma reflexão salva ainda.");
             return;
         }
         
-        for (Reflexao r : userAtual.historico) {
-            System.out.println("\nData: " + r.data);
-            System.out.println("Leitura: " + r.leitura);
-            System.out.println("Meditação: " + r.meditacao);
-            System.out.println("Oração: " + r.oracao);
-            System.out.println("Contemplação: " + r.contemplacao);
+        for (Reflexao r : currentUser.history) {
+            System.out.println("\nData: " + r.date);
+            System.out.println("Leitura: " + r.reading);
+            System.out.println("Meditação: " + r.meditation);
+            System.out.println("Oração: " + r.prayer);
+            System.out.println("Contemplação: " + r.contemplation);
         }
     }
 }
